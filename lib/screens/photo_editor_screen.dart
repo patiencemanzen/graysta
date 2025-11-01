@@ -84,7 +84,7 @@ class _PhotoEditorScreenState extends State<PhotoEditorScreen> {
       print('✅ ${filter.name} filter applied successfully');
     } catch (e) {
       setState(() => _isProcessingFilter = false);
-      
+
       // Error haptic feedback
       HapticFeedback.heavyImpact();
       print('❌ Filter application failed: $e');
@@ -331,9 +331,10 @@ class _PhotoEditorScreenState extends State<PhotoEditorScreen> {
                                       height: 48,
                                       child: CircularProgressIndicator(
                                         strokeWidth: 4,
-                                        valueColor: AlwaysStoppedAnimation<Color>(
-                                          AppColors.silverLight,
-                                        ),
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                              AppColors.silverLight,
+                                            ),
                                       ),
                                     ),
                                     SizedBox(height: 16),
@@ -348,9 +349,7 @@ class _PhotoEditorScreenState extends State<PhotoEditorScreen> {
                                   ],
                                 ),
                               ),
-                            )
-                            .animate()
-                            .fadeIn(duration: 200.ms),
+                            ).animate().fadeIn(duration: 200.ms),
                         ],
                       ),
                     ),

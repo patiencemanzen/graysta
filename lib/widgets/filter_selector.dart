@@ -167,7 +167,9 @@ class FilterPreviewGrid extends StatelessWidget {
         return Padding(
               padding: const EdgeInsets.only(right: 12),
               child: GestureDetector(
-                onTap: isProcessing ? null : () => onFilterSelected(filter.type),
+                onTap: isProcessing
+                    ? null
+                    : () => onFilterSelected(filter.type),
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
                   width: 140, // Fixed width for horizontal scroll
@@ -230,16 +232,18 @@ class FilterPreviewGrid extends StatelessWidget {
                                   color: AppColors.black.withOpacity(0.7),
                                   child: const Center(
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         SizedBox(
                                           width: 32,
                                           height: 32,
                                           child: CircularProgressIndicator(
                                             strokeWidth: 3,
-                                            valueColor: AlwaysStoppedAnimation<Color>(
-                                              AppColors.silverLight,
-                                            ),
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                                  AppColors.silverLight,
+                                                ),
                                           ),
                                         ),
                                         SizedBox(height: 8),
