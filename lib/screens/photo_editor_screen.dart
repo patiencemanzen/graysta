@@ -3,14 +3,17 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import '../theme/app_colors.dart';
 import '../models/photo_filter.dart';
 import '../services/image_filter_service.dart';
 import '../services/ai_service.dart';
 import '../services/file_service.dart';
 import '../services/filter_preview_service.dart';
+import '../services/admob_service.dart';
 import '../widgets/before_after_slider.dart';
 import '../widgets/filter_selector.dart';
+import '../widgets/ad_banner_widget.dart';
 
 class PhotoEditorScreen extends StatefulWidget {
   final File imageFile;
@@ -31,10 +34,29 @@ class _PhotoEditorScreenState extends State<PhotoEditorScreen> {
   bool _showBeforeAfter = false;
   bool _useAIVersion = false;
 
+  // Ad related variables
+  InterstitialAd? _interstitialAd;
+  int _filterChangeCount = 0;
+  static const int _adFrequency = 3; // Show ad every 3 filter changes
+
   @override
   void initState() {
     super.initState();
     _loadImage();
+    _loadInterstitialAd();
+  }
+
+  // Load interstitial ad for better user experience
+  Future<void> _loadInterstitialAd() async {
+    _interstitialAd = await AdMobService.loadInterstitialAd();
+  }
+
+  // Show interstitial ad with proper timing
+  Future<void> _showInterstitialAd() async {
+    if (_interstitialAd != null) {
+      await AdMobService.showInterstitialAd(_interstitialAd);
+      _interstitialAd = null;
+    }
   }
 
   Future<void> _loadImage() async {
@@ -60,6 +82,14 @@ class _PhotoEditorScreenState extends State<PhotoEditorScreen> {
 
     // Haptic feedback for better user experience
     HapticFeedback.selectionClick();
+
+    // Show interstitial ad occasionally
+    _filterChangeCount++;
+    if (_filterChangeCount % _adFrequency == 0) {
+      await _showInterstitialAd();
+      // Reload ad for next time
+      _loadInterstitialAd();
+    }
 
     setState(() {
       _selectedFilter = filter;
@@ -254,6 +284,7 @@ class _PhotoEditorScreenState extends State<PhotoEditorScreen> {
   @override
   void dispose() {
     FilterPreviewService.clearCache();
+    _interstitialAd?.dispose();
     super.dispose();
   }
 
@@ -507,6 +538,11 @@ class _PhotoEditorScreenState extends State<PhotoEditorScreen> {
                       ),
 
                       const SizedBox(height: 16),
+
+                      // Advertisement Banner
+                      const AdBannerWidget(),
+
+                      const SizedBox(height: 12),
 
                       // Filter preview carousel
                       SizedBox(

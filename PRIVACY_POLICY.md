@@ -19,6 +19,7 @@ Graysta ("we," "our," or "us") is committed to protecting your privacy. This Pri
 - **Device Information:** Device model, operating system version, and app version
 - **Usage Analytics:** App performance data and crash reports (anonymized)
 - **Technical Data:** IP address for AI enhancement features (when used)
+- **Advertising Data:** Anonymous advertising identifiers for personalized ads (via Google AdMob)
 
 ### Permissions We Request
 
@@ -36,9 +37,9 @@ Graysta ("we," "our," or "us") is committed to protecting your privacy. This Pri
 
 #### Internet Permission
 
-- **Purpose:** For optional AI enhancement features
-- **Usage:** Only when you choose to use AI enhancement
-- **Data:** Temporary image processing, not stored on our servers
+- **Purpose:** For optional AI enhancement features and advertising
+- **Usage:** Only when you choose to use AI enhancement or when ads are displayed
+- **Data:** Temporary image processing (not stored) and anonymous advertising data
 
 ## How We Use Your Information
 
@@ -61,6 +62,14 @@ Graysta ("we," "our," or "us") is committed to protecting your privacy. This Pri
 - Crash reports help us identify and fix bugs
 - No personal information is included in analytics
 
+### Advertising (Google AdMob)
+
+- We display ads to keep Graysta free for all users
+- Ads are served by Google AdMob and may be personalized based on your interests
+- We do not share your photos or personal content with advertisers
+- Ad preferences can be managed through your device's ad settings
+- Rewarded ads unlock premium features temporarily
+
 ## Data Storage and Security
 
 ### Local Storage
@@ -79,7 +88,8 @@ Graysta ("we," "our," or "us") is committed to protecting your privacy. This Pri
 
 - **AI Processing:** Secure cloud processing for AI enhancement features
 - **Analytics:** Anonymous usage data for app improvement
-- **No Advertising Networks:** We do not use advertising or tracking services
+- **Google AdMob:** Advertising platform that may collect device identifiers and usage patterns
+- **Ad Personalization:** Ads may be tailored based on your interests (can be disabled in device settings)
 
 ## Your Rights and Choices
 

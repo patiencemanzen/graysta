@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../theme/app_colors.dart';
 import '../services/camera_service.dart';
+import '../widgets/ad_banner_widget.dart';
 import 'photo_editor_screen.dart';
 import 'dart:io';
 
@@ -192,6 +193,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
+
+              // Ad Banner
+              const AdBannerWidget().animate().fadeIn(delay: 1400.ms),
 
               // Footer
               const SizedBox(height: 16),
