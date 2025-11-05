@@ -25,34 +25,39 @@ class _AdBannerWidgetState extends State<AdBannerWidget> {
   void _loadBannerAd() {
     if (!AdMobService.adsEnabled) return;
 
-    _bannerAd = AdMobService.createBannerAd(
-      adSize: widget.adSize,
-      listener: BannerAdListener(
-        onAdLoaded: (ad) {
-          if (mounted) {
-            setState(() {
-              _isAdLoaded = true;
-            });
-          }
-        },
-        onAdFailedToLoad: (ad, error) {
-          ad.dispose();
-          if (mounted) {
-            setState(() {
-              _isAdLoaded = false;
-            });
-          }
-        },
-        onAdOpened: (ad) {
-          // Ad opened
-        },
-        onAdClosed: (ad) {
-          // Ad closed
-        },
-      ),
-    );
+    try {
+      _bannerAd = AdMobService.createBannerAd(
+        adSize: widget.adSize,
+        listener: BannerAdListener(
+          onAdLoaded: (ad) {
+            if (mounted) {
+              setState(() {
+                _isAdLoaded = true;
+              });
+            }
+          },
+          onAdFailedToLoad: (ad, error) {
+            ad.dispose();
+            if (mounted) {
+              setState(() {
+                _isAdLoaded = false;
+              });
+            }
+            print('Banner ad failed to load: $error');
+          },
+          onAdOpened: (ad) {
+            // Ad opened
+          },
+          onAdClosed: (ad) {
+            // Ad closed
+          },
+        ),
+      );
 
-    _bannerAd?.load();
+      _bannerAd?.load();
+    } catch (e) {
+      print('Error creating banner ad: $e');
+    }
   }
 
   @override

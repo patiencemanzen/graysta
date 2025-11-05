@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "98813760476",
+    "project_id": "graysta-9b670",
+    "storage_bucket": "graysta-9b670.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:98813760476:android:cde711023c70e15466b519",
+        "android_client_info": {
+          "package_name": "com.patienceman.graysta"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAx-EYiVuf1Rgfg5bxAQyjPbUIMtHkcV0M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

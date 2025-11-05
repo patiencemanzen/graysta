@@ -4,7 +4,7 @@ description: "AI-powered photo editor app that transforms ordinary photos into c
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.0+1
+version: 1.0.0+5
 
 environment:
   sdk: ^3.8.1
@@ -43,6 +43,9 @@ dependencies:
   
   # Monetization
   google_mobile_ads: ^5.1.0
+  
+  # Firebase (for better ads integration)
+  firebase_core: ^3.6.0
 
 dev_dependencies:
   flutter_test:

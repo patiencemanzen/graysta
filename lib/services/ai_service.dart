@@ -5,7 +5,7 @@ import 'package:image/image.dart' as img;
 import 'package:google_generative_ai/google_generative_ai.dart';
 
 class AIService {
-  static const String _apiKey = 'AIzaSyAmsQ0WDbQYQea7RXcln5lKbeyRfEw0KYE';
+  static const String _apiKey = 'AIzaSyAmsQ0WDbQYQea7RXcln5lKbeyRfEw0KYE'; 
   static GenerativeModel? _model;
 
   static GenerativeModel get _geminiModel {
@@ -13,16 +13,12 @@ class AIService {
       _model ??= GenerativeModel(model: 'gemini-pro', apiKey: _apiKey);
       return _model!;
     } catch (e) {
-      if (kDebugMode) print('🚨 Error creating Gemini model: $e');
       throw e;
     }
   }
 
   static Future<Uint8List?> enhanceImage(Uint8List imageBytes) async {
     try {
-      if (kDebugMode) print('🤖 Starting AI-powered photo enhancement...');
-
-      // First check if we can connect to Gemini
       final isConnected = await checkConnection();
 
       if (isConnected) {
@@ -43,7 +39,6 @@ class AIService {
     final image = img.decodeImage(imageBytes);
     if (image == null) return imageBytes;
 
-    // Smart automatic enhancement algorithm (AI-inspired)
     img.Image enhanced = img.Image.from(image);
 
     // Step 1: Intelligent contrast and brightness adjustment
@@ -75,9 +70,7 @@ class AIService {
       const testPrompt =
           'Hello! Please respond with "CONNECTED" to confirm the API is working.';
 
-      final testResponse = await _geminiModel.generateContent([
-        Content.text(testPrompt),
-      ]);
+      await _geminiModel.generateContent([Content.text(testPrompt)]);
 
       // If we reach here, API works! Now let's do enhancement analysis
       const analysisPrompt = '''

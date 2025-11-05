@@ -43,3 +43,22 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Security - DO NOT COMMIT
+android/key.properties
+android/*.jks
+android/*.keystore
+lib/config/api_keys.dart
+lib/config/secrets.dart
+.env
+.env.*
+!.env.example
+
+# Firebase private config (optional - these are already generated)
+# android/app/google-services.json
+# ios/Runner/GoogleService-Info.plist
+
+# Large files and builds
+*.apk
+*.ipa
+*.aab

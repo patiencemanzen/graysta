@@ -10,21 +10,20 @@ class AdMobService {
   static bool _isInitialized = false;
   static bool _adsEnabled = true;
 
-  // Production Ad Unit IDs - Replace with your actual AdMob ad unit IDs
   static const String _androidBannerAdUnitId =
-      'ca-app-pub-4952214744306447/1234567890'; // Replace with your banner ad unit ID
+      'ca-app-pub-4952214744306447/1234567890';
   static const String _iosBannerAdUnitId =
-      'ca-app-pub-4952214744306447/1234567891'; // Replace with your iOS banner ad unit ID
+      'ca-app-pub-4952214744306447/1234567891';
 
   static const String _androidInterstitialAdUnitId =
-      'ca-app-pub-4952214744306447/1234567892'; // Replace with your interstitial ad unit ID
+      'ca-app-pub-4952214744306447/1234567892';
   static const String _iosInterstitialAdUnitId =
-      'ca-app-pub-4952214744306447/1234567893'; // Replace with your iOS interstitial ad unit ID
+      'ca-app-pub-4952214744306447/1234567893';
 
   static const String _androidRewardedAdUnitId =
-      'ca-app-pub-4952214744306447/1234567894'; // Replace with your rewarded ad unit ID
+      'ca-app-pub-4952214744306447/1234567894';
   static const String _iosRewardedAdUnitId =
-      'ca-app-pub-4952214744306447/1234567895'; // Replace with your iOS rewarded ad unit ID
+      'ca-app-pub-4952214744306447/1234567895';
 
   // Get platform-specific ad unit IDs
   static String get bannerAdUnitId {
