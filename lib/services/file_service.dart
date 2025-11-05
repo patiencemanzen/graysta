@@ -30,7 +30,6 @@ class FileService {
       }
       return true;
     } catch (e) {
-      print('Permission error: $e');
       return false;
     }
   }
@@ -61,7 +60,6 @@ class FileService {
 
       return finalFileName;
     } catch (e) {
-      print('Error saving image: $e');
       return null;
     }
   }
@@ -90,7 +88,6 @@ class FileService {
 
       return file;
     } catch (e) {
-      print('Error saving image to app directory: $e');
       return null;
     }
   }
@@ -119,7 +116,6 @@ class FileService {
         }
       });
     } catch (e) {
-      print('Error sharing image: $e');
       rethrow;
     }
   }
@@ -146,7 +142,6 @@ class FileService {
           (a, b) => b.statSync().modified.compareTo(a.statSync().modified),
         );
     } catch (e) {
-      print('Error getting exported images: $e');
       return [];
     }
   }
@@ -159,7 +154,6 @@ class FileService {
       }
       return false;
     } catch (e) {
-      print('Error deleting image: $e');
       return false;
     }
   }
@@ -185,7 +179,6 @@ class FileService {
 
       return totalSize / (1024 * 1024); // Convert to MB
     } catch (e) {
-      print('Error calculating storage usage: $e');
       return 0.0;
     }
   }

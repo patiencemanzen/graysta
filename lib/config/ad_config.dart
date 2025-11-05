@@ -1,23 +1,23 @@
 class AdConfig {
   // Production Ad Unit IDs (replace with your real AdMob IDs)
-  static const String androidAppId = 'ca-app-pub-4952214744306447~4396869603';
-  static const String iosAppId = 'ca-app-pub-4952214744306447~4564390565';
+  static const String androidAppId = 'ca-app-pub-3940256099942544~3347511713';
+  static const String iosAppId = 'ca-app-pub-3940256099942544~1458002511';
 
   // Banner Ad Units
   static const String androidBannerId =
-      'ca-app-pub-4952214744306447~4396869603';
-  static const String iosBannerId = 'ca-app-pub-4952214744306447~4564390565';
+      'ca-app-pub-3940256099942544/6300978111';
+  static const String iosBannerId = 'ca-app-pub-3940256099942544/2934735716';
 
   // Interstitial Ad Units
   static const String androidInterstitialId =
-      'ca-app-pub-4952214744306447~4396869603';
+      'ca-app-pub-3940256099942544/1033173712';
   static const String iosInterstitialId =
-      'ca-app-pub-4952214744306447~4564390565';
+      'ca-app-pub-3940256099942544/4411468910';
 
   // Rewarded Ad Units
   static const String androidRewardedId =
-      'ca-app-pub-4952214744306447~4396869603';
-  static const String iosRewardedId = 'ca-app-pub-4952214744306447~4564390565';
+      'ca-app-pub-3940256099942544/5224354917';
+  static const String iosRewardedId = 'ca-app-pub-3940256099942544/1712485313';
 
   // Ad Settings
   static const int interstitialAdFrequency = 3; // Show every 3 filter changes

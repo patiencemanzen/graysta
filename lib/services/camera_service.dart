@@ -12,7 +12,7 @@ class CameraService {
     try {
       _cameras = await availableCameras();
     } catch (e) {
-      print('Error initializing cameras: $e');
+      // Cameras not available
     }
   }
 
@@ -42,7 +42,6 @@ class CameraService {
 
       return photo != null ? File(photo.path) : null;
     } catch (e) {
-      print('Error capturing photo: $e');
       return null;
     }
   }
@@ -63,7 +62,6 @@ class CameraService {
 
       return image != null ? File(image.path) : null;
     } catch (e) {
-      print('Error picking image from gallery: $e');
       return null;
     }
   }
@@ -84,7 +82,6 @@ class CameraService {
 
       return images.map((xFile) => File(xFile.path)).toList();
     } catch (e) {
-      print('Error picking multiple images: $e');
       return null;
     }
   }

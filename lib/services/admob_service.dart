@@ -78,7 +78,7 @@ class AdMobService {
       },
       (FormError error) {
         // Handle consent info update error
-        print('Consent info update failed: ${error.message}');
+        if (kDebugMode) print('Consent info update failed: ${error.message}');
       },
     );
   }
@@ -91,16 +91,14 @@ class AdMobService {
         if (status == ConsentStatus.required) {
           consentForm.show((FormError? formError) {
             // Handle form error
-            if (formError != null) {
-              print('Consent form error: ${formError.message}');
-            }
+            // Handle form error if needed
             _loadConsentForm();
           });
         }
       },
       (FormError formError) {
         // Handle form load error
-        print('Consent form load failed: ${formError.message}');
+        if (kDebugMode) print('Consent form load failed: ${formError.message}');
       },
     );
   }
@@ -145,7 +143,8 @@ class AdMobService {
           interstitialAd = ad;
         },
         onAdFailedToLoad: (LoadAdError error) {
-          print('InterstitialAd failed to load: $error');
+          // Silently handle ad load failure in production
+          if (kDebugMode) print('InterstitialAd failed to load: $error');
         },
       ),
     );
@@ -167,7 +166,8 @@ class AdMobService {
           rewardedAd = ad;
         },
         onAdFailedToLoad: (LoadAdError error) {
-          print('RewardedAd failed to load: $error');
+          // Silently handle ad load failure in production
+          if (kDebugMode) print('RewardedAd failed to load: $error');
         },
       ),
     );
@@ -193,7 +193,7 @@ class AdMobService {
       onAdFailedToShowFullScreenContent: (InterstitialAd ad, AdError error) {
         ad.dispose();
         onAdClosed?.call();
-        print('InterstitialAd failed to show: $error');
+        if (kDebugMode) print('InterstitialAd failed to show: $error');
       },
     );
 
@@ -219,7 +219,7 @@ class AdMobService {
       onAdFailedToShowFullScreenContent: (RewardedAd ad, AdError error) {
         ad.dispose();
         onAdClosed?.call();
-        print('RewardedAd failed to show: $error');
+        if (kDebugMode) print('RewardedAd failed to show: $error');
       },
     );
 

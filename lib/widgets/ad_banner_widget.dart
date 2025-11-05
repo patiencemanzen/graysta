@@ -36,7 +36,6 @@ class _AdBannerWidgetState extends State<AdBannerWidget> {
           }
         },
         onAdFailedToLoad: (ad, error) {
-          print('Banner ad failed to load: $error');
           ad.dispose();
           if (mounted) {
             setState(() {
@@ -45,10 +44,10 @@ class _AdBannerWidgetState extends State<AdBannerWidget> {
           }
         },
         onAdOpened: (ad) {
-          print('Banner ad opened');
+          // Ad opened
         },
         onAdClosed: (ad) {
-          print('Banner ad closed');
+          // Ad closed
         },
       ),
     );

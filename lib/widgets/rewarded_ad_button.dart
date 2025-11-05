@@ -69,7 +69,6 @@ class _RewardedAdButtonState extends State<RewardedAdButton> {
     } catch (e) {
       setState(() => _isLoading = false);
       widget.onAdFailed?.call();
-      print('Error showing rewarded ad: $e');
     }
   }
 

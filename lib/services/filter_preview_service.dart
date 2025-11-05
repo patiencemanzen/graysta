@@ -16,8 +16,6 @@ class FilterPreviewService {
     final image = img.decodeImage(originalImage);
     if (image == null) throw Exception('Failed to decode image');
 
-    // Create a rectangular thumbnail optimized for card previews (140x120)
-    // This aspect ratio works better with the new card layout
     final thumbnail = img.copyResize(
       image,
       width: 140,
@@ -28,7 +26,6 @@ class FilterPreviewService {
     return Uint8List.fromList(img.encodeJpg(thumbnail, quality: 85));
   }
 
-  /// Generate preview for a specific filter
   static Future<Uint8List> generateFilterPreview(
     Uint8List baseImage,
     FilterType filterType,
@@ -45,18 +42,12 @@ class FilterPreviewService {
       Uint8List preview;
       if (filterType == FilterType.none) {
         preview = baseImage;
-        print('📸 Using original image for ${filterType.name}');
       } else {
-        print('🎨 Applying ${filterType.name} filter to preview...');
         preview = await ImageFilterService.applyFilter(baseImage, filterType);
-        print(
-          '✅ ${filterType.name} preview generated: ${preview.length} bytes',
-        );
       }
 
       // Validate preview is not empty
       if (preview.isEmpty) {
-        print('⚠️ Empty preview for ${filterType.name}, using base image');
         preview = baseImage;
       }
 
@@ -64,7 +55,6 @@ class FilterPreviewService {
       _previewCache[cacheKey] = preview;
       return preview;
     } catch (e) {
-      print('❌ Error generating preview for ${filterType.name}: $e');
       // Fallback to base image
       _previewCache[cacheKey] = baseImage;
       return baseImage;
@@ -74,20 +64,11 @@ class FilterPreviewService {
   /// Pre-generate all filter previews for faster UI
   static Future<void> preGenerateAllPreviews(Uint8List originalImage) async {
     try {
-      print(
-        '🖼️ Starting preview generation from ${originalImage.length} byte image...',
-      );
-
       _basePreviewImage = await generatePreviewThumbnail(originalImage);
-      print(
-        '✅ Base preview thumbnail created: ${_basePreviewImage!.length} bytes',
-      );
 
       // Generate previews for all filters in batches to avoid blocking UI
       final filters = FilterType.values;
       const batchSize = 4;
-
-      print('🎨 Generating previews for ${filters.length} filters...');
 
       for (int i = 0; i < filters.length; i += batchSize) {
         final batch = filters.skip(i).take(batchSize);
@@ -98,18 +79,14 @@ class FilterPreviewService {
               (filter) => generateFilterPreview(_basePreviewImage!, filter),
             ),
           );
-          print('✅ Batch ${(i / batchSize).ceil()} completed');
         } catch (e) {
-          print('❌ Error in batch ${(i / batchSize).ceil()}: $e');
+          // Error in batch processing
         }
 
         // Small delay between batches to keep UI responsive
         await Future.delayed(const Duration(milliseconds: 10));
       }
-
-      print('🎉 Filter preview generation completed!');
     } catch (e) {
-      print('❌ Preview generation failed: $e');
       _basePreviewImage = originalImage; // Fallback to original
     }
   }
@@ -170,7 +147,6 @@ class FilterPreviewService {
               alignment: Alignment.center,
               filterQuality: FilterQuality.medium,
               errorBuilder: (context, error, stackTrace) {
-                print('❌ Image.memory error for ${filterType.name}: $error');
                 return Container(
                   color: Colors.grey[800],
                   child: const Icon(
@@ -183,7 +159,6 @@ class FilterPreviewService {
             ),
           );
         } else if (snapshot.hasError) {
-          print('❌ Preview error for ${filterType.name}: ${snapshot.error}');
           return Container(
             color: Colors.grey[800],
             child: const Icon(

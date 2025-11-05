@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'dart:math' as math;
+import 'package:flutter/foundation.dart';
 import 'package:image/image.dart' as img;
 import 'package:google_generative_ai/google_generative_ai.dart';
 
@@ -12,28 +13,26 @@ class AIService {
       _model ??= GenerativeModel(model: 'gemini-pro', apiKey: _apiKey);
       return _model!;
     } catch (e) {
-      print('🚨 Error creating Gemini model: $e');
+      if (kDebugMode) print('🚨 Error creating Gemini model: $e');
       throw e;
     }
   }
 
   static Future<Uint8List?> enhanceImage(Uint8List imageBytes) async {
     try {
-      print('🤖 Starting AI-powered photo enhancement...');
+      if (kDebugMode) print('🤖 Starting AI-powered photo enhancement...');
 
       // First check if we can connect to Gemini
       final isConnected = await checkConnection();
 
       if (isConnected) {
-        print('✅ Gemini API connected! Using AI analysis...');
         final analysisResult = await _analyzeImageWithGemini(imageBytes);
         return await _applyGeminiGuidedEnhancement(imageBytes, analysisResult);
       } else {
-        print('⚠️ Gemini API unavailable, using advanced AI fallback...');
         return await _applyFallbackEnhancement(imageBytes);
       }
     } catch (e) {
-      print('🔄 AI Enhancement fallback due to error: $e');
+      if (kDebugMode) print('🔄 AI Enhancement fallback due to error: $e');
       return await _applyFallbackEnhancement(imageBytes);
     }
   }
@@ -43,8 +42,6 @@ class AIService {
   ) async {
     final image = img.decodeImage(imageBytes);
     if (image == null) return imageBytes;
-
-    print('🎨 Applying advanced AI-style enhancement...');
 
     // Smart automatic enhancement algorithm (AI-inspired)
     img.Image enhanced = img.Image.from(image);
@@ -67,13 +64,12 @@ class AIService {
     // Step 4: Final color balance
     enhanced = img.adjustColor(enhanced, contrast: 1.1, saturation: 0.15);
 
-    print('✨ Advanced AI enhancement completed!');
     return Uint8List.fromList(img.encodeJpg(enhanced, quality: 95));
   }
 
   static Future<String> _analyzeImageWithGemini(Uint8List imageBytes) async {
     try {
-      print('🔍 Testing Gemini API with simple text prompt...');
+      if (kDebugMode) print('🔍 Testing Gemini API with simple text prompt...');
 
       // Simple text-only test first
       const testPrompt =
@@ -82,8 +78,6 @@ class AIService {
       final testResponse = await _geminiModel.generateContent([
         Content.text(testPrompt),
       ]);
-
-      print('✅ Gemini API Response: ${testResponse.text}');
 
       // If we reach here, API works! Now let's do enhancement analysis
       const analysisPrompt = '''
@@ -102,11 +96,8 @@ Choose CINEMATIC for the best results and respond with just: "CINEMATIC - Movie-
       ]);
 
       final result = analysisResponse.text ?? 'CINEMATIC - Default enhancement';
-      print('🎯 Gemini enhancement recommendation: $result');
       return result;
     } catch (e) {
-      print('❌ Gemini API Error: $e');
-      print('🔄 Using fallback AI enhancement...');
       return 'CINEMATIC - Fallback enhancement';
     }
   }
@@ -226,8 +217,6 @@ Choose CINEMATIC for the best results and respond with just: "CINEMATIC - Movie-
 
   static Future<bool> checkConnection() async {
     try {
-      print('🔍 Testing Gemini API connection...');
-
       // Test with a very simple request
       final response = await _geminiModel.generateContent([
         Content.text('Hello'),
@@ -235,20 +224,8 @@ Choose CINEMATIC for the best results and respond with just: "CINEMATIC - Movie-
 
       // If we get any response without error, API is working
       final hasResponse = response.text != null && response.text!.isNotEmpty;
-      print(
-        '🔗 Gemini API status: ${hasResponse ? "✅ CONNECTED" : "❌ NO RESPONSE"}',
-      );
-
-      if (hasResponse) {
-        print(
-          '📝 Sample response: ${response.text?.substring(0, math.min(50, response.text!.length))}...',
-        );
-      }
-
       return hasResponse;
     } catch (e) {
-      print('❌ Gemini API connection failed: $e');
-      print('🔄 Will use advanced AI fallback processing');
       return false;
     }
   }

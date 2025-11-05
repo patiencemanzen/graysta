@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -68,11 +69,8 @@ class _PhotoEditorScreenState extends State<PhotoEditorScreen> {
       });
 
       // Pre-generate filter previews for better UI performance
-      print('📱 Starting filter preview generation...');
       await FilterPreviewService.preGenerateAllPreviews(bytes);
-      print('✅ Filter previews ready for UI');
     } catch (e) {
-      print('❌ Error loading image: $e');
       _showErrorSnackBar('Failed to load image: $e');
     }
   }
@@ -98,7 +96,6 @@ class _PhotoEditorScreenState extends State<PhotoEditorScreen> {
     });
 
     try {
-      print('🎨 Applying ${filter.name} filter...');
       final filteredBytes = await ImageFilterService.applyFilter(
         _originalImage,
         filter,
@@ -111,13 +108,11 @@ class _PhotoEditorScreenState extends State<PhotoEditorScreen> {
 
       // Success haptic feedback
       HapticFeedback.lightImpact();
-      print('✅ ${filter.name} filter applied successfully');
     } catch (e) {
       setState(() => _isProcessingFilter = false);
 
       // Error haptic feedback
       HapticFeedback.heavyImpact();
-      print('❌ Filter application failed: $e');
       _showErrorSnackBar('Failed to apply filter: $e');
     }
   }
@@ -125,19 +120,119 @@ class _PhotoEditorScreenState extends State<PhotoEditorScreen> {
   Future<void> _enhanceWithAI() async {
     if (_isProcessingAI || _filteredImage == null) return;
 
+    // Show rewarded ad for premium AI enhancement
+    _showRewardedAIEnhancementDialog();
+  }
+
+  void _showRewardedAIEnhancementDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: AppColors.secondaryDark,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          title: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: AppColors.aiEnhanceBlue.withValues(alpha: 0.2),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(
+                  Icons.auto_awesome,
+                  color: AppColors.aiEnhanceBlue,
+                  size: 24,
+                ),
+              ),
+              const SizedBox(width: 12),
+              const Expanded(
+                child: Text(
+                  'Premium AI Enhancement',
+                  style: TextStyle(
+                    color: AppColors.silverLight,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          content: const Text(
+            'Unlock advanced AI enhancement powered by Google Gemini. Watch a short ad to get premium results for free!',
+            style: TextStyle(
+              color: AppColors.silverMedium,
+              fontSize: 14,
+              height: 1.4,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text(
+                'Cancel',
+                style: TextStyle(color: AppColors.silverMedium),
+              ),
+            ),
+            ElevatedButton.icon(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _watchAdForAIEnhancement();
+              },
+              icon: const Icon(Icons.play_arrow, color: AppColors.black),
+              label: const Text(
+                'Watch Ad & Enhance',
+                style: TextStyle(
+                  color: AppColors.black,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.aiEnhanceBlue,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _watchAdForAIEnhancement() async {
+    final rewardedAd = await AdMobService.loadRewardedAd();
+
+    if (rewardedAd != null) {
+      await AdMobService.showRewardedAd(
+        rewardedAd,
+        onUserEarnedReward: (ad, reward) {
+          // User earned reward, start AI enhancement
+          _performAIEnhancement();
+        },
+        onAdClosed: () {
+          // Ad closed without reward - could show alternative or just close
+        },
+      );
+    } else {
+      // No ad available, provide AI enhancement for free as fallback
+      _performAIEnhancement();
+    }
+  }
+
+  Future<void> _performAIEnhancement() async {
     setState(() => _isProcessingAI = true);
 
     try {
       // Show AI enhancement dialog
       _showAIEnhancementDialog();
 
-      print('🤖 Starting AI enhancement with Gemini...');
+      if (kDebugMode) print('🤖 Starting AI enhancement with Gemini...');
 
       // Test API connection first
       final isConnected = await AIService.checkConnection();
-      if (!isConnected) {
-        print('⚠️ Gemini API not accessible, using fallback enhancement');
-      }
 
       final enhancedBytes = await AIService.enhanceImage(_filteredImage!);
 
@@ -157,7 +252,7 @@ class _PhotoEditorScreenState extends State<PhotoEditorScreen> {
         throw Exception('AI enhancement returned empty result');
       }
     } catch (e) {
-      print('❌ AI Enhancement Error: $e');
+      if (kDebugMode) print('❌ AI Enhancement Error: $e');
       setState(() => _isProcessingAI = false);
       Navigator.pop(context); // Close dialog
       _showErrorSnackBar(
@@ -232,6 +327,12 @@ class _PhotoEditorScreenState extends State<PhotoEditorScreen> {
   }
 
   Future<void> _saveImage() async {
+    // Show interstitial ad before save action (monetization opportunity)
+    final adToShow = await AdMobService.loadInterstitialAd();
+    if (adToShow != null) {
+      await AdMobService.showInterstitialAd(adToShow);
+    }
+
     try {
       final imageToSave = _getCurrentImage();
       final fileName = await FileService.saveImageToGallery(
@@ -250,6 +351,12 @@ class _PhotoEditorScreenState extends State<PhotoEditorScreen> {
   }
 
   Future<void> _shareImage() async {
+    // Show interstitial ad before share action (high engagement moment)
+    final adToShow = await AdMobService.loadInterstitialAd();
+    if (adToShow != null) {
+      await AdMobService.showInterstitialAd(adToShow);
+    }
+
     try {
       final imageToShare = _getCurrentImage();
       await FileService.shareImage(imageToShare);
